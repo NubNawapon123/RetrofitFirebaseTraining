@@ -66,14 +66,14 @@ class MainActivity : BaseActivity(), UserContact.View {
     }
 
     private val callback = object : UserCallback {
-        override fun onSelectItem(userListModel: UserListModel, position: Int) {
+        override fun onSelectItem(userListModel: UserListModel) {
             startActivityForResult(
                 Intent(AddMemberActivity.getStartIntent(this@MainActivity, userListModel)),
                 REQUEST_CODE
             )
         }
 
-        override fun onSelectItemLongClick(userListModel: UserListModel, position: Int) {
+        override fun onSelectItemLongClick(userListModel: UserListModel) {
             presenter.removeItemMember(userListModel.idUser ?: "")
         }
     }

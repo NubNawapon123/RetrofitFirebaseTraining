@@ -1,5 +1,6 @@
 package com.example.retrofitfirebasemvp.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,13 @@ class MainActivity : BaseActivity(), UserContact.View {
         presenter.startRemoteService(RemoteServiceImpl().getInstance())
         presenter.loadData()
         initView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            presenter.loadData()
+        }
     }
 
     override fun updateData(model: UserModel) {

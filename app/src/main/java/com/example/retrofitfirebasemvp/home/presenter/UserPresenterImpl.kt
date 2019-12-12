@@ -7,6 +7,7 @@ import com.example.retrofitfirebasemvp.service.RemoteServiceImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.math.BigDecimal
 
 class UserPresenterImpl(var view: UserContact.View?) : UserContact.Presenter {
 
@@ -36,6 +37,10 @@ class UserPresenterImpl(var view: UserContact.View?) : UserContact.Presenter {
                         name = it.value.name
                         weight = it.value.weight
                         height = it.value.height
+                        bmi = calculateBmi(
+                            weight = it.value.weight.coverStringToDouble(),
+                            height = it.value.height.coverStringToDouble()
+                        )
                     }
                     model.userList.add(modelList)
                     model.email = response?.body()?.email
@@ -47,6 +52,7 @@ class UserPresenterImpl(var view: UserContact.View?) : UserContact.Presenter {
         })
 
     }
+
 
     override fun removeItemMember(userId: String) {
         view?.showLoading()
@@ -64,4 +70,25 @@ class UserPresenterImpl(var view: UserContact.View?) : UserContact.Presenter {
             }
         })
     }
+
+    private fun calculateBmi(weight: Double, height: Double): String? {
+        val x = weight
+        val y = height * 0.01
+        return (x / (y * y)).toString().formatStringDouble()
+    }
+}
+
+fun String?.coverStringToDouble(): Double = (this ?: "0.0").toDouble()
+
+fun String?.formatStringDouble(digit: Int? = 2): String {
+    val format = "%,." + digit + "f"
+    if (!this.isNullOrBlank()) {
+        val value = this.replace(",".toRegex(), "")
+        return try {
+            String.format(format, BigDecimal(value))
+        } catch (e: Exception) {
+            value
+        }
+    }
+    return this ?: ""
 }

@@ -33,7 +33,7 @@ class AddMemberPresenterImpl(private val view: AddMemberContract.View) :
             val callApiAddMember = remoteService?.addMember(USER_KEY_ID + userId, model)
             callApiAddMember?.enqueue(object : Callback<UserListResponseModel?> {
                 override fun onFailure(call: Call<UserListResponseModel?>?, t: Throwable?) {
-                    view?.addMemberSuccess()
+                    // load fail ja tam a rai D na? (if call api fail you can handle error)
                 }
 
                 override fun onResponse(

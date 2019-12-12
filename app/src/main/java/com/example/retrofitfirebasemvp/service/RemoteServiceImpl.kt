@@ -2,13 +2,12 @@ package com.example.retrofitfirebasemvp.service
 
 import com.example.retrofitfirebasemvp.constant.REMOTE_SERVICE_URL
 import com.example.retrofitfirebasemvp.model.UserListModel
-import com.example.retrofitfirebasemvp.model.UserModel
+import com.example.retrofitfirebasemvp.model.UserListResponseModel
+import com.example.retrofitfirebasemvp.model.UserResponseModel
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 
 class RemoteServiceImpl {
 
@@ -27,31 +26,18 @@ class RemoteServiceImpl {
     }
 
     interface RemoteService {
-//        @PUT("/task/{title}.json")
-//        fun createTask( // title configured as identifier for tasks
-//            @Path("title") title: String?,
-//            @Body task: Task?
-//        ): Call<Task?>?
-//
-//        @GET("/task/{title}.json")
-//        fun getTask(@Path("title") title: String?): Call<Task?>? // could be used for fetching details or checking if item already exists
+        @PUT("/users/userList/{id}.json")
+        fun addMember( // title configured as identifier for tasks
+            @Path("id") title: String?,
+            @Body task: UserListResponseModel?
+        ): Call<UserListResponseModel?>?
 
-        // note that we'll receive a Map here from firebase with key being the identifier
-        @get:GET("/task/.json")
-        val allTasks: Call<Map<String?, Any?>?>?
+        @DELETE("/users/userList/{id}.json")
+        fun removeMember(@Path("id") userListPosition: String): Call<UserListModel?>?
 
-//        // note that we'll receive a Map here from firebase with key being the identifier
-//        @get:GET("/task/test.json")
-//        val allTasksModel: Call<Task>?
+        @get:GET("/users.json")
+        val getDataMember: Call<UserResponseModel>
 
-        @DELETE("/user/userList/{position}.json")
-        fun deleteUserListModel(@Path("position") userListPosition: String): Call<UserListModel?>?
-
-        @get:GET("/user.json")
-        val getUserList: Call<UserModel>
-
-        @get:GET("/user.json")
-        val getUserListMap: Call<Map<Int, UserModel>>
     }
 
 }

@@ -11,7 +11,7 @@ class UserContact {
 
         fun loadData()
 
-        fun removeItemMember(position: String)
+        fun removeItemMember(userId: String)
     }
 
     interface View : BaseView {

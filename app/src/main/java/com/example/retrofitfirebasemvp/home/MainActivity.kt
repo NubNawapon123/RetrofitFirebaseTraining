@@ -1,9 +1,10 @@
 package com.example.retrofitfirebasemvp.home
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.retrofitfirebasemvp.R
+import com.example.retrofitfirebasemvp.addmember.AddMemberActivity
 import com.example.retrofitfirebasemvp.common.BaseActivity
 import com.example.retrofitfirebasemvp.home.adapter.UserAdapter
 import com.example.retrofitfirebasemvp.home.presenter.UserContact
@@ -16,6 +17,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), UserContact.View {
 
+    companion object {
+        const val REQUEST_CODE = 999
+    }
     private lateinit var presenter: UserPresenterImpl
     private var userAdapter: UserAdapter? = null
     private var userModel: UserModel? = null
@@ -31,11 +35,8 @@ class MainActivity : BaseActivity(), UserContact.View {
 
     override fun updateData(model: UserModel) {
         userModel = model
-        updateEmail(model.email)
+        tv_email?.text = "Email :${model.email}"
         userAdapter?.updateDataUserList(userModel?.userList ?: listOf())
-        Toast.makeText(
-            this@MainActivity, "email: ${model.email}", Toast.LENGTH_LONG
-        ).show()
     }
 
     private fun initView() {
@@ -44,29 +45,28 @@ class MainActivity : BaseActivity(), UserContact.View {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = userAdapter
         }
-    }
 
-    private fun updateEmail(email: String?) {
-        tv_email?.text = "Email :" + email
-        btn_add_member?.setOnClickListener {
-            Toast.makeText(
-                this@MainActivity, "Are u doing?", Toast.LENGTH_LONG
-            ).show()
+        btn_add_member_firebase?.setOnClickListener {
+            presenter.loadData()
+        }
+
+        btn_add_member_data.setOnClickListener {
+            startActivityForResult(
+                Intent(this, AddMemberActivity::class.java), REQUEST_CODE
+            )
         }
     }
 
     private val callback = object : UserCallback {
         override fun onSelectItem(userListModel: UserListModel, position: Int) {
-            Toast.makeText(
-                this@MainActivity, "you select : ${userListModel.name} \n " +
-                        "position: $position", Toast.LENGTH_LONG
-            ).show()
+            startActivityForResult(
+                Intent(AddMemberActivity.getStartIntent(this@MainActivity, userListModel)),
+                REQUEST_CODE
+            )
         }
 
         override fun onSelectItemLongClick(userListModel: UserListModel, position: Int) {
-            Toast.makeText(
-                this@MainActivity, "you removeItemMember position : $position", Toast.LENGTH_LONG
-            ).show()
+            presenter.removeItemMember(userListModel.idUser ?: "")
         }
     }
 

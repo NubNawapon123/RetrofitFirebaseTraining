@@ -9,13 +9,13 @@ import kotlinx.android.synthetic.main.item_member_user.view.*
 class UserHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var textViewName = itemView.tv_name
-    var textViewAge = itemView.tv_age
+    var textViewUserId = itemView.tv_userId
     var itemUser = itemView.item_user
 
     fun bindData(userListModel: UserListModel, callback: UserCallback?, position: Int) {
 
         textViewName.text = "Name : " + userListModel.name
-        textViewAge.text = "Age: ${userListModel.age} "
+        textViewUserId.text = "UserID: ${userListModel.name} "
 
         itemUser?.apply {
 

@@ -26,7 +26,7 @@ class AddMemberActivity : BaseActivity(), AddMemberContract.View {
     }
 
     private var editModel: UserListModel? = null
-    private lateinit var presenter: AddMemberPresenterImpl
+    private lateinit var presenter: AddMemberContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

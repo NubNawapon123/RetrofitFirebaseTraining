@@ -21,7 +21,7 @@ class MainActivity : BaseActivity(), UserContact.View {
     companion object {
         const val REQUEST_CODE = 999
     }
-    private lateinit var presenter: UserPresenterImpl
+    private lateinit var presenter: UserContact.Presenter
     private var userAdapter: UserAdapter? = null
     private var userModel: UserModel? = null
 
